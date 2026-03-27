@@ -1,0 +1,67 @@
+# SquadUp API Endpoints
+
+Here is the list of endpoints available in the application to test with Insomnia.
+The base URL for all endpoints is `http://localhost:8080`.
+
+## Contenido
+
+Para acceder a cualquier endpoint protegido es necesario haber iniciado sesión antes y enviar el token JWT en la cabecera `Authorization`:
+```http
+Authorization: Bearer <tu_token_jwt>
+```
+
+---
+
+## 1. AuthController (Autenticación)
+Gestión de registro y acceso de usuarios.
+
+*   `POST /api/auth/register`
+    *   **Descripción:** Registrar un nuevo usuario.
+    *   **Body (JSON):** `{"username": "...", "password": "...", "email": "...", "full_name": "..."}`
+*   `POST /api/auth/login`
+    *   **Descripción:** Iniciar sesión.
+    *   **Body (JSON):** `{"username": "...", "password": "..."}`
+    *   **Respuesta:** Retorna el `token` JWT.
+
+---
+
+## 2. LobbyController (Lobbies)
+Gestión de salas de juego. **(Requieren autenticación)**
+
+*   `POST /api/lobbies`
+    *   **Descripción:** Crear un nuevo Lobby.
+    *   **Body (JSON):** `LobbyRequest` (Nombre, descripción, privacidad, max_members, etc.)
+*   `GET /api/lobbies/my`
+    *   **Descripción:** Obtener los lobbies de los cuales soy dueño.
+*   `GET /api/lobbies/joined`
+    *   **Descripción:** Obtener los lobbies a los cuales me he unido.
+*   `PUT /api/lobbies/{id}`
+    *   **Descripción:** Editar un Lobby existente (solo el dueño).
+    *   **Body (JSON):** `LobbyRequest`
+*   `DELETE /api/lobbies/{id}`
+    *   **Descripción:** Eliminar un Lobby (solo el dueño).
+*   `POST /api/lobbies/{id}/join`
+    *   **Descripción:** Solicitar unirse a un Lobby.
+*   `POST /api/lobbies/{id}/leave`
+    *   **Descripción:** Abandonar un Lobby.
+*   `PATCH /api/lobbies/requests/{requestId}?accept=true|false`
+    *   **Descripción:** Aceptar o rechazar una solicitud de ingreso (solo administradores/dueños del lobby).
+
+---
+
+## 3. NotificationController (Notificaciones)
+Notificaciones en tiempo real o persistencias del usuario. **(Requieren autenticación)**
+
+*   `GET /api/notifications`
+    *   **Descripción:** Obtener las últimas 30 notificaciones del usuario.
+*   `GET /api/notifications/unread-count`
+    *   **Descripción:** Obtener el número de notificaciones no leídas.
+*   `PATCH /api/notifications/read-all`
+    *   **Descripción:** Marcar todas las notificaciones como leídas.
+
+---
+
+## 4. WebSockets (Opcional)
+Chat en tiempo real, implementado en `ChatWebSocketController`.
+Requiere conectarse a través de STOMP usando el endpoint configurado en el backend (por ejemplo, `/ws` o `/stomp`).
+*   Los mensajes enviados a `/app/chat.send/{lobbyId}` serán distribuidos.

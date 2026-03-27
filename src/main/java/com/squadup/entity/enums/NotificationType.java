@@ -1,0 +1,7 @@
+package com.squadup.entity.enums;
+
+public enum NotificationType {
+    JOIN_REQUEST, REQUEST_ACCEPTED, REQUEST_REJECTED,
+    USER_LEFT, USER_JOINED, NEW_MESSAGE, IMAGE_SENT,
+    MENTION, POST_APPROVED, LOBBY_DELETED, SYSTEM
+}

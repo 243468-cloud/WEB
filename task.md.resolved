@@ -1,0 +1,20 @@
+# SquadUp — Spring Boot + PostgreSQL
+
+## Completado
+- [x] [squadup.sql](file:///c:/Users/24346/OneDrive/Escritorio/BackendWeb/squadup.sql) — script PostgreSQL completo (13 tablas)
+- [x] [pom.xml](file:///c:/Users/24346/OneDrive/Escritorio/BackendWeb/pom.xml) — dependencias Maven
+- [x] [application.properties](file:///c:/Users/24346/OneDrive/Escritorio/BackendWeb/src/main/resources/application.properties) — configuración BD, JWT, OAuth2, WebSocket
+- [x] [SquadUpApplication.java](file:///c:/Users/24346/OneDrive/Escritorio/BackendWeb/src/main/java/com/squadup/SquadUpApplication.java) — clase principal
+- [x] Entidades JPA (13): User, OAuthAccount, Game, UserGame, Lobby, LobbyMember, LobbyJoinRequest, Post, PostMedia, SavedPost, Message, Notification
+- [x] Enums (8): UserStatus, OAuthProvider, LobbyType, LobbyPrivacy, MemberRole, JoinRequestStatus, MessageType, MessageStatus, NotificationType
+- [x] Repositorios: UserRepository, LobbyRepository, PostRepository, NotificationRepository, MessageRepository
+- [x] [WebSocketConfig.java](file:///c:/Users/24346/OneDrive/Escritorio/BackendWeb/src/main/java/com/squadup/config/WebSocketConfig.java)
+
+## En progreso
+- [/] Seguridad: `SecurityConfig`, `JwtUtil`, `JwtFilter`
+- [/] Repositorios restantes: Game, LobbyMember, LobbyJoinRequest, SavedPost, OAuthAccount
+- [/] DTOs de request/response
+- [/] Servicios: AuthService, UserService, LobbyService, PostService, NotificationService, MessageService
+- [/] Controladores REST: Auth, User, Lobby, Post, Notification
+- [/] Manejo global de excepciones
+- [/] WebSocket Controller (chat + notificaciones)

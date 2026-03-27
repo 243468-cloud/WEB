@@ -1,0 +1,30 @@
+# WebSocket JWT Authentication
+
+The WebSocket infrastructure (STOMP broker, ChatWebSocketController, NotificationService) is already implemented.
+The missing piece is **JWT authentication on the WebSocket connection**. Currently the `Principal` would be `null` on STOMP connections, causing errors in chat and notifications.
+
+## Proposed Changes
+
+### WebSocket Security Layer
+
+#### [NEW] `JwtHandshakeInterceptor.java`
+Intercepts the HTTP upgrade handshake and extracts the JWT from the `?token=` query param (or `Authorization` header). Stores the authenticated user so Spring can resolve the `Principal` in STOMP handlers.
+
+#### [MODIFY] [WebSocketConfig.java](file:///c:/Users/24346/OneDrive/Escritorio/BackendWeb/src/main/java/com/squadup/config/WebSocketConfig.java)
+- Add `JwtHandshakeInterceptor` to the `/ws` endpoint registration.
+- Add a `ChannelInterceptor` that validates the JWT on the STOMP `CONNECT` frame.
+
+---
+
+## Verification Plan
+
+### Manual Test (in Insomnia + WebSocket client)
+
+1. **Start API** — run `mvn spring-boot:run`.
+2. **Register + Login** via `POST /api/auth/register` and `POST /api/auth/login` to get a JWT token.
+3. Use a WebSocket client (e.g. [Postman WebSocket](https://www.postman.com/) or the browser console) to connect:
+   ```
+   ws://localhost:8080/ws?token=<YOUR_JWT>
+   ```
+4. Subscribe to `/topic/lobby/1` and send a message to `/app/lobby/1/send` — the message should be broadcast back.
+5. Subscribe to `/user/queue/notify` — verify that joining a lobby triggers a notification push.
