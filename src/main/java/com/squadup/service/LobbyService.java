@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -42,8 +41,9 @@ public class LobbyService {
                 .name(req.getName()).description(req.getDescription())
                 .lobbyType(req.getLobbyType()).privacy(req.getPrivacy())
                 .maxMembers(req.getMaxMembers())
-                .tags(req.getTags() != null ? req.getTags().toArray(new String[0]) : null)
                 .build();
+
+        lobby.setTags(req.getTags());
 
         lobbyRepo.save(lobby);
 
@@ -81,7 +81,7 @@ public class LobbyService {
         lobby.setLobbyType(req.getLobbyType());
         lobby.setPrivacy(req.getPrivacy());
         lobby.setMaxMembers(req.getMaxMembers());
-        lobby.setTags(req.getTags() != null ? req.getTags().toArray(new String[0]) : null);
+        lobby.setTags(req.getTags());
         if (req.getGameId() != null) {
             lobby.setGame(gameRepo.findById(req.getGameId()).orElse(null));
         }
@@ -190,7 +190,7 @@ public class LobbyService {
                 .imageUrl(l.getImageUrl()).lobbyType(l.getLobbyType())
                 .privacy(l.getPrivacy()).maxMembers(l.getMaxMembers())
                 .memberCount(count)
-                .tags(l.getTags() != null ? Arrays.asList(l.getTags()) : null)
+                .tags(l.getTags())
                 .gameName(l.getGame() != null ? l.getGame().getName() : null)
                 .ownerUsername(l.getOwner().getUsername())
                 .createdAt(l.getCreatedAt())

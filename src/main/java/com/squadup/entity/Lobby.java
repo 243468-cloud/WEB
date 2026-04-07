@@ -30,6 +30,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Entidad Lobby — tabla `lobbies`.
@@ -83,11 +84,34 @@ public class Lobby {
     private Short maxMembers = 10;
 
     /**
-     * Guardar tags como JSON genérico soportado por MySQL
+     * Tags del lobby — reemplaza la columna JSON tags (violaba 1FN).
+     * Mapeado a la tabla lobby_tags con cascada completa.
+     * Para leer los valores como List<String> usar getTags().
      */
-    @Type(JsonType.class)
-    @Column(name = "tags", columnDefinition = "json")
-    private String[] tags;
+    @OneToMany(mappedBy = "lobby", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<LobbyTag> lobbyTags = new ArrayList<>();
+
+    /**
+     * Retorna los tags como List<String> para compatibilidad con DTOs y LobbyService.
+     */
+    public List<String> getTags() {
+        return lobbyTags.stream().map(LobbyTag::getTag).toList();
+    }
+
+    /**
+     * Reemplaza todos los tags del lobby. Limpia la lista existente y
+     * agrega los nuevos respetando el orphanRemoval de la relación.
+     */
+    public void setTags(List<String> tags) {
+        this.lobbyTags.clear();
+        if (tags != null) {
+            tags.stream()
+                .distinct()
+                .map(t -> LobbyTag.builder().lobby(this).tag(t).build())
+                .forEach(this.lobbyTags::add);
+        }
+    }
 
     /** JSON genérico para meta_data soportado por MySQL */
     @Type(JsonType.class)
