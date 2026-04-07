@@ -2,6 +2,7 @@ package com.squadup.config;
 
 import com.squadup.security.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -25,7 +26,7 @@ import java.util.List;
 /**
  * Configuración Spring Security:
  * - Sin sesiones (JWT stateless)
- * - CORS habilitado para Angular (localhost:4200)
+ * - CORS parametrizado vía app.cors.allowed-origins (soporta múltiples orígenes)
  * - BCrypt para contraseñas locales
  * - Rutas públicas: /api/auth/**, /ws/**
  */
@@ -36,6 +37,10 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
+
+    /** Orígenes permitidos, separados por coma. Ejemplo: http://localhost:4200,https://squadup.app */
+    @Value("${app.cors.allowed-origins}")
+    private List<String> allowedOrigins;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -62,7 +67,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200"));
+        configuration.setAllowedOrigins(allowedOrigins);
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));
         configuration.setExposedHeaders(List.of("Authorization"));

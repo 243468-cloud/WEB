@@ -59,3 +59,29 @@ public class JwtUtil {
                 .getPayload(); // reemplaza getBody()
     }
 }
+
+/*
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "juan@mail.com",
+  "password": "Password123!"
+}
+
+
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "gamer01",
+  "fullName": "Juan García",
+  "email": "juan@mail.com",
+  "password": "Password123!"
+}
+
+
+
+
+
+*/

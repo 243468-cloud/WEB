@@ -2,6 +2,7 @@ package com.squadup.entity;
 
 import com.squadup.entity.enums.UserStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -31,9 +32,11 @@ public class User {
     private Long id;
 
     @Column(name = "username", nullable = false, length = 50)
+    @Pattern(regexp = ".*[a-zA-ZáéíóúÁÉÍÓÚñÑ].*", message = "El apodo no puede ser solo un número")
     private String username;
 
     @Column(name = "full_name", nullable = false, length = 120)
+    @Pattern(regexp = ".*[a-zA-ZáéíóúÁÉÍÓÚñÑ].*", message = "El nombre no puede ser solo un número")
     private String fullName;
 
     @Column(name = "email", nullable = false, length = 255)
@@ -51,14 +54,14 @@ public class User {
     private UserStatus status = UserStatus.ACTIVE;
 
     @CreationTimestamp
-    @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "DATETIME(6)")
+    @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "DATETIME")
     private OffsetDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updated_at", nullable = false, columnDefinition = "DATETIME(6)")
+    @Column(name = "updated_at", nullable = false, columnDefinition = "DATETIME")
     private OffsetDateTime updatedAt;
 
-    @Column(name = "last_login", columnDefinition = "DATETIME(6)")
+    @Column(name = "last_login", columnDefinition = "DATETIME")
     private OffsetDateTime lastLogin;
 
     // ── Relaciones ──────────────────────────────────────────

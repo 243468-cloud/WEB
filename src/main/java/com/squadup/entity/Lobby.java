@@ -35,9 +35,8 @@ import java.util.Map;
  * Entidad Lobby — tabla `lobbies`.
  * Vistas: Crear Lobby, Mis Lobbys, Editar Lobby, Panel de Perfil.
  *
- * Tipos nativos PostgreSQL (Hibernate 6 / hypersistence-utils):
- * @Type(StringArrayType.class) → TEXT[]
- * @Type(JsonBinaryType.class) → JSONB
+ * Tipos JSON con MySQL 8+ (Hibernate 6 / hypersistence-utils):
+ * @Type(JsonType.class) → JSON  (columna tipo JSON nativo de MySQL)
  */
 @Entity
 @Table(name = "lobbies")
@@ -100,11 +99,11 @@ public class Lobby {
     private Boolean isActive = true;
 
     @CreationTimestamp
-    @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "DATETIME(6)")
+    @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "DATETIME")
     private OffsetDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updated_at", nullable = false, columnDefinition = "DATETIME(6)")
+    @Column(name = "updated_at", nullable = false, columnDefinition = "DATETIME")
     private OffsetDateTime updatedAt;
 
     // ── Relaciones ────────────────────────────
