@@ -28,7 +28,7 @@ public class UserGame {
     @JoinColumn(name = "game_id", nullable = false, foreignKey = @ForeignKey(name = "fk_ug_game"))
     private Game game;
  
-    @Column(name = "rank", length = 20)
+    @Column(name = "`rank`", length = 20)
     private String rank;
  
     // rank_label eliminado — violaba 3FN (dependía del enum rank, no de la PK).

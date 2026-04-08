@@ -1,7 +1,7 @@
 package com.squadup.entity;
 
 import com.squadup.entity.enums.NotificationType;
-import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -55,9 +55,9 @@ public class Notification {
     @Column(name = "notif_type", nullable = false)
     private NotificationType notifType;
 
-    /** JSONB nativo PostgreSQL — Hibernate 6 API (@Type con clase directa) */
-    @Type(JsonBinaryType.class)
-    @Column(name = "payload", columnDefinition = "jsonb")
+    /** JSON nativo MySQL — Hibernate 6 API (@Type con clase directa) */
+    @Type(JsonType.class)
+    @Column(name = "payload", columnDefinition = "json")
     private Map<String, Object> payload;
 
     @Column(name = "is_read", nullable = false)

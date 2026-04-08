@@ -2,7 +2,7 @@ package com.squadup.entity;
 
 import com.squadup.entity.enums.MessageStatus;
 import com.squadup.entity.enums.MessageType;
-import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
@@ -80,9 +80,9 @@ public class Message {
     @Builder.Default
     private MessageStatus status = MessageStatus.SENT;
 
-    /** JSONB — adjuntos: {url, filename, size, width, height} */
-    @Type(JsonBinaryType.class)
-    @Column(name = "attachment", columnDefinition = "jsonb")
+    /** JSON — adjuntos: {url, filename, size, width, height} */
+    @Type(JsonType.class)
+    @Column(name = "attachment", columnDefinition = "json")
     private Map<String, Object> attachment;
 
     @CreationTimestamp
