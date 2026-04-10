@@ -10,10 +10,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * Controlador de Autenticación.
  * POST /api/auth/register → Vista "Crear Cuenta"
- * POST /api/auth/login → Vista "Iniciar Sesión"
+ * POST /api/auth/login    → Vista "Iniciar Sesión"
+ * POST /api/auth/google   → Autenticación con Google OAuth (ID Token)
  */
 @RestController
 @RequestMapping("/api/auth")
@@ -30,5 +33,16 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest req) {
         return ResponseEntity.ok(authService.login(req));
+    }
+
+    /**
+     * Recibe el ID Token de Google emitido por Google Sign-In en el frontend.
+     * Body: { "idToken": "eyJhbGci..." }
+     * Respuesta: mismo AuthResponse que /login (token JWT propio de SquadUp)
+     */
+    @PostMapping("/google")
+    public ResponseEntity<AuthResponse> googleLogin(@RequestBody Map<String, String> body) {
+        String idToken = body.get("idToken");
+        return ResponseEntity.ok(authService.loginWithGoogle(idToken));
     }
 }
