@@ -43,7 +43,7 @@ public class User {
     private String email;
 
     @Column(name = "password_hash", length = 255)
-    private String passwordHash; // NULL si sólo usa OAuth2
+    private String passwordHash;
 
     @Column(name = "avatar_url", columnDefinition = "TEXT")
     private String avatarUrl;
@@ -65,10 +65,6 @@ public class User {
     private OffsetDateTime lastLogin;
 
     // ── Relaciones ──────────────────────────────────────────
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
-    private List<OAuthAccount> oauthAccounts = new ArrayList<>();
-
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Lobby> ownedLobbies = new ArrayList<>();
